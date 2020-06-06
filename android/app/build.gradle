@@ -31,26 +31,55 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
+    aaptOptions {
+        noCompress 'tflite'
+    }
     lintOptions {
         disable 'InvalidPackage'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.my_study"
+        applicationId "com.jbl.app.activities"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.jbl.app.activities",
+                JPUSH_APPKEY : "f0432ae61bcfd3d38c0b5e0a", // NOTE: JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+    }
+    signingConfigs {
+        release {
+            keyAlias 'sign'
+            keyPassword 'jiabala123456'
+            storeFile file('D:\\sign\\jiabala.jks')
+            storePassword 'jiabala123456'
+        }
+        debug {//debug版签名配置
+            storeFile file("D:\\sign\\jiabala.keystore")
+            storePassword "jiabala123456"
+            keyAlias "jiabala"
+            keyPassword "jiabala123456"
+        }
     }
 
     buildTypes {
+        debug{
+            //signingConfig signingConfigs.debug
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

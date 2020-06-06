@@ -1,4 +1,4 @@
-package com.example.my_study
+package com.jbl.app.activities
 
 import android.os.Bundle
 
